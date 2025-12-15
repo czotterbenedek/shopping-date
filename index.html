@@ -92,7 +92,7 @@
     <p>Please choose the day you want us to go shopping together.
        I promise great outfits and even better memories ✨</p>
 
-    <input type="date" id="date" required />
+    <input type="datetime-local" id="date" required />
 
     <button onclick="sendEmail()">Confirm Our Date</button>
 
@@ -103,7 +103,7 @@
 
   <script>
     (function() {
-      emailjs.init('v9pa1fI9Q0c-hErQM'); // <-- replace
+      emailjs.init('v9pa1fI9Q0c-hErQM');
     })();
 
     function sendEmail() {
@@ -113,10 +113,35 @@
         return;
       }
 
+      const start = new Date(date);
+      const end = new Date(start.getTime() + 3 * 60 * 60 * 1000); // 3-hour shopping date
+
+
+      function formatICS(d) {
+      return d.toISOString().replace(/[-:]/g, '').split('.')[0] + 'Z';
+      }
+
+
+      const icsContent = `BEGIN:VCALENDAR
+      VERSION:2.0
+      PRODID:-//Shopping Date//EN
+      BEGIN:VEVENT
+      UID:${Date.now()}@shoppingdate
+      DTSTAMP:${formatICS(new Date())}
+      DTSTART:${formatICS(start)}
+      DTEND:${formatICS(end)}
+      SUMMARY:Shopping Date 💖
+      DESCRIPTION:A shopping date together — paid with love 🛍️💳
+      END:VEVENT
+      END:VCALENDAR`;
+
+      const base64ICS = btoa(icsContent);
+
       const templateParams = {
-        selected_date: date,
-        to_email: 'HER_EMAIL@example.com',
-        cc_email: 'YOUR_EMAIL@example.com'
+      selected_date: start.toLocaleString(),
+      to_email: 'HER_EMAIL@example.com',
+      cc_email: 'YOUR_EMAIL@example.com',
+      ics_file: base64ICS
       };
 
       emailjs.send('service_3dnb1l7', 'template_8g1wb6o', templateParams)
