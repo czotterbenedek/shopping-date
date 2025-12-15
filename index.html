@@ -113,35 +113,17 @@
         return;
       }
 
-      const start = new Date(date);
-      const end = new Date(start.getTime() + 3 * 60 * 60 * 1000); // 3-hour shopping date
-
-
-      function formatICS(d) {
-      return d.toISOString().replace(/[-:]/g, '').split('.')[0] + 'Z';
-      }
-
-
-      const icsContent = `BEGIN:VCALENDAR
-      VERSION:2.0
-      PRODID:-//Shopping Date//EN
-      BEGIN:VEVENT
-      UID:${Date.now()}@shoppingdate
-      DTSTAMP:${formatICS(new Date())}
-      DTSTART:${formatICS(start)}
-      DTEND:${formatICS(end)}
-      SUMMARY:Shopping Date 💖
-      DESCRIPTION:A shopping date together — paid with love 🛍️💳
-      END:VEVENT
-      END:VCALENDAR`;
-
-      const base64ICS = btoa(icsContent);
-
       const templateParams = {
-      selected_date: start.toLocaleString(),
-      to_email: 'HER_EMAIL@example.com',
-      cc_email: 'YOUR_EMAIL@example.com',
-      ics_file: base64ICS
+        selected_date: new Date(date).toLocaleString(undefined, {
+                        weekday: 'long',
+                        year: 'numeric',
+                        month: 'long',
+                        day: 'numeric',
+                        hour: '2-digit',
+                        minute: '2-digit'
+                      }),
+        to_email: 'HER_EMAIL@example.com',
+        cc_email: 'YOUR_EMAIL@example.com'
       };
 
       emailjs.send('service_3dnb1l7', 'template_8g1wb6o', templateParams)
