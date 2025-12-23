@@ -81,6 +81,67 @@
       font-size: 40px;
       margin-bottom: 10px;
     }
+
+    /* Gift buttons */
+    .gift {
+      position: fixed;
+      font-size: 56px;
+      cursor: pointer;
+      animation: float 6s ease-in-out infinite;
+      opacity: 0.9;
+    }
+
+    .gift-1 { top: 8%; left: 6%; animation-delay: 0s; }
+    .gift-2 { top: 15%; right: 6%; animation-delay: 2s; }
+    .gift-3 { bottom: 8%; left: 18%; animation-delay: 4s; }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-15px); }
+    }
+
+    /* Modal */
+    .modal {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.6);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 999;
+    }
+
+    .modal-content {
+      background: white;
+      padding: 20px;
+      border-radius: 20px;
+      max-width: 90%;
+      max-height: 80%;
+      position: relative;
+      animation: pop 0.3s ease;
+    }
+
+    @keyframes pop {
+      from { transform: scale(0.8); opacity: 0; }
+      to { transform: scale(1); opacity: 1; }
+    }
+
+    .modal-content img {
+      max-width: 100%;
+      max-height: 60vh;
+      border-radius: 15px;
+    }
+
+    .close {
+      position: absolute;
+      top: 10px;
+      right: 15px;
+      font-size: 26px;
+      cursor: pointer;
+      color: #bb377d;
+    }
+
   </style>
 </head>
 <body>
@@ -91,6 +152,7 @@
     <p>As mentioned, this year I would like to take you shopping as a Christmas present.</p>
     <p>Please choose the day you want us to go shopping together.
        I promise great outfits and even better memories ✨</p>
+    <p>(Click on the small gift boxes for a surprise!)</p>
 
     <input type="datetime-local" id="date" required />
 
@@ -98,6 +160,19 @@
 
     <div class="success" id="successMessage">
       💌 Date confirmed! Check your email.
+    </div>
+  </div>
+
+  <!-- Gift Buttons -->
+  <div class="gift gift-1" onclick="openGift('gift1.jpg')">🎁</div>
+  <div class="gift gift-2" onclick="openGift('gift2.jpg')">🎁</div>
+  <div class="gift gift-3" onclick="openGift('gift3.jpg')">🎁</div>
+
+  <!-- Modal -->
+  <div id="giftModal" class="modal" onclick="closeGift()">
+    <div class="modal-content" onclick="event.stopPropagation()">
+      <span class="close" onclick="closeGift()">×</span>
+      <img id="giftImage" src="" alt="Gift">
     </div>
   </div>
 
@@ -134,6 +209,15 @@
           alert('Something went wrong 😢');
           console.error(err);
         });
+    }
+
+    function openGift(imageSrc) {
+      document.getElementById('giftImage').src = imageSrc;
+      document.getElementById('giftModal').style.display = 'flex';
+    }
+
+    function closeGift() {
+      document.getElementById('giftModal').style.display = 'none';
     }
   </script>
 
