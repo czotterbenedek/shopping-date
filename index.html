@@ -209,7 +209,13 @@
 
       emailjs.send('service_3dnb1l7', 'template_8g1wb6o', templateParams)
         .then(() => {
-          document.getElementById('successMessage').style.display = 'block';
+          const successBox = document.getElementById('successMessage');
+          successBox.style.display = 'block';
+
+          // Hide after 10 seconds (10000 ms)
+          setTimeout(() => {
+            successBox.style.display = 'none';
+          }, 15000);
         })
         .catch(err => {
           alert('Something went wrong 😢');
